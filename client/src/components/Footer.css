@@ -1,0 +1,24 @@
+/* Footer.css */
+
+.footer {
+     height: 10vh; /* adjust the height as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #646cff;
+  }
+  
+  .footer .containerf {
+    text-align: center;
+  }
+  
+  .footer .containerf .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* make the row take full height */
+  }
+  
+  .footer p {
+    margin: 0;
+  }

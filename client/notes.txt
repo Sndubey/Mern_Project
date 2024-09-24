@@ -1,0 +1,57 @@
+frontend part (client):
+1: npm create vite@latest in MERN PROJECT folder.
+2: give project name (like client)
+3: choose react as framework and javascript (typescript recommended) as variant.
+4: now cd client, npm install, npm run dev (to run the react project).
+5: here we have used vite instead of create-react-app for frontend, but development language is only pure react. (recommended to use typescript with react).
+
+Creating navigation bar:
+1: using react-router-dom so that going at any page of nav bar doesnt refresh the page.
+2: npm i react-router-dom
+3: import {BrowserRouter, Routes, Route} from "react-router-dom";
+4: do the coding in App.jsx to set the routers.
+5: now create the pages folder which contains the elements of navbar like About.jsx, Home.jsx etc.
+6: to create the frontend of navbar create components folder in src folder, import navbar elements stored in pages folder into Navbar components to create navbar.
+7: now import Navbar component in App.jsx and use the component btw <BrowserRouter> and <Routes> bcz we want to display navbar in every page.
+8: now if we want that page doesnt refresh after routing from one page to another import {NavLink} from 'react-router-dom'; and do the frontend coding using Navlink tag instead of anchor tag ,(it stops the refershing by storing the visited page data into browser in stack).
+9: add css in Navbar.css
+
+Creating registration page:
+1: Do the coding only in Register.jsx page.
+
+same for login.
+
+pages folder contains the files of components who contains the whole web page code, and components folder contains the 
+file of components who is reusable in the frontend.
+
+sending data from frontend to db.
+1: In the code, inside the function which is called after form submit write this type of code:  (for register) 
+try {
+    const response = await fetch(`http://localhost:5000/api/auth/register`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+    });
+    if (response.ok) {  // if data successfully sended to db then empty the input field.
+        setuser({
+            username: '', email: '', phone: '', password: ''
+        })
+        navigate('/login');  //if reg. successful then send user to login page.
+    }
+    console.log(response);
+} catch (error) {
+    console.log("register error", error);
+}
+2: To use navigate('/login'); first import { useNavigate } from "react-router-dom"; then const navigate = useNavigate();
+3: In server.js file (server folder) import and use the cors to solve the problem of ports.
+
+Do the same for login page.
+
+Storing token data into local storage.
+Token works like an id whenever user interacts with server. We will use context API to send props (token).
+1: const res_data = await response.json();  // get the response data from server which also contains the token data.
+2: storetokenInLS(res_data.token);  // call this function to store token in local storage.
+3: create a folder "store", and a file inside it auth.jsx, in this file write the code. 
+4: in main.jsx file wrap the App.jsx component inside <AuthProvider> component.
