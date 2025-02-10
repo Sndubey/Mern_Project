@@ -1,19 +1,57 @@
 import { useState } from "react";
+import { useAuth } from "../store/auth";
 
 export const Contact = () => {
-    const [user, setuser] = useState({
-        email: "",
+    const defaultContactForm = {
         username: "",
+        email: "",
         message: ""
-    });
+    }
+    
+    const [contact, setContact] = useState(defaultContactForm);
 
-    const handleInput = (e) => {
-        setuser({ ...user, [e.target.name]: e.target.value });
+    const URL = "http://localhost:5000/api/form/contact";
+
+    const [userData, setUserData] = useState(true);
+    const {user} = useAuth();
+
+    if(userData && user){
+        setContact({
+            username:user.username,
+            email:user.email,
+            message:"",
+        })
+
+        setUserData(false);  // sets false so that after pg refresh it doesnt always set contact var with user data. 
     }
 
-    const handleSubmit = (e) => {
+    const handleInput = (e) => {
+        setContact({ ...contact, [e.target.name]: e.target.value });
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(user);
+        console.log(contact);
+
+        try {
+            const response = await fetch(URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(contact),
+            });
+            console.log("response in contact pg: ",response);
+            if(response.ok){
+                setContact(defaultContactForm);
+                console.log("user contact data stored successfully");
+            }
+            else{
+                console.log("error in storing user contact data");
+            }
+        } catch (error) {
+            console.log("contact form error: ",error)
+        }
     }
 
     return (
@@ -32,15 +70,15 @@ export const Contact = () => {
                                 <form onSubmit={handleSubmit}>
                                     <div>
                                         <label htmlFor="email">Email</label><br />
-                                        <input type="email" name="email" placeholder="email" id="email" autoComplete="off" required value={user.email} onChange={handleInput}></input>
+                                        <input type="email" name="email" placeholder="email" id="email" autoComplete="off" required value={contact.email} onChange={handleInput}></input>
                                     </div>
                                     <div>
                                         <label htmlFor="username">Username</label><br />
-                                        <input type="text" name="username" placeholder="username" id="username" autoComplete="off" required value={user.username} onChange={handleInput}></input>
+                                        <input type="text" name="username" placeholder="username" id="username" autoComplete="off" required value={contact.username} onChange={handleInput}></input>
                                     </div>
                                     <div>
                                         <label htmlFor="message">Message</label><br />
-                                        <textarea name="message" placeholder="message" id="message" autoComplete="off" required rows="6" value={user.message} onChange={handleInput}></textarea>
+                                        <textarea name="message" placeholder="message" id="message" autoComplete="off" required rows="6" value={contact.message} onChange={handleInput}></textarea>
                                     </div> <br />
                                     <button type="submit" className="btn btn-submit" onChange={handleInput}>Submit</button>
                                 </form>

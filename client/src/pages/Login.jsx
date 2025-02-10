@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
+import {toast} from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Login = () => {
     const [user, setuser] = useState({
@@ -8,10 +10,10 @@ export const Login = () => {
         password: ""
     });
 
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
     const URL = "http://localhost:5000/api/auth/login";
 
-    const {storetokenInLS} = useAuth();
+    const {storeTokenInLS} = useAuth();
 
     const handleInput = (e) => {
         setuser({ ...user, [e.target.name]: e.target.value });
@@ -29,14 +31,15 @@ export const Login = () => {
                 },
                 body: JSON.stringify(user)  // conserting object to json.
             })
+            const res_data = await response.json();
             if(response.ok){
-                const res_data = await response.json();
-                storetokenInLS(res_data.token);
-                setuser({email: "", password: ""})
-                Navigate('/');
+                storeTokenInLS(res_data.token);
+                setuser({email: "", password: ""});
+                toast.success("Login Successfull");
+                navigate("/");
             }
             else{
-                alert("Invalid Credentials");
+                toast.error("Invalid Credentials");
                 console.log("Invalid credentials");
             }
             
@@ -68,7 +71,7 @@ export const Login = () => {
                                         <label htmlFor="password">Password</label><br />
                                         <input type="password" name="password" placeholder="password" id="password" autoComplete="off" required value={user.password} onChange={handleInput}></input>
                                     </div> <br />
-                                    <button type="submit" className="btn btn-submit" onChange={handleInput}>Login</button>
+                                    <button type="submit" className="btn btn-submit">Login</button>
                                 </form>
                             </div>
                         </div>
@@ -78,3 +81,6 @@ export const Login = () => {
         </>
     );
 }
+
+// login: email: shivam@gmail.com, password: shivam123
+// admin login: email: shubham@gmail.com, password: shub1234

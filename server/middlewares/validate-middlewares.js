@@ -5,17 +5,21 @@ const validate = (schema) => async (req, res, next) => {   //here schema is para
         next();  //now flow of program will go back to caller function (router.js file).
     } catch (err) {
         const status = 422;
-        let message;
-        if (err.errors && err.errors.length > 0 && err.errors[0].message) {
-            message = err.errors[0].message;
-        } else {
-            message = 'Invalid request payload';
-        }
+        const message = 'Fill the input properly';
+        const extraDetails = err.errors[0].message;  //it always takes the first error detail from array of details (if any).
+
+        //this code stores all errors from zod validation. can also be used instead of above message variable code.
+        // if (err.errors && err.errors.length > 0) {
+        //     message = err.errors.map(e => e.message).join(', '); // Join error messages for better readability
+        // }
+
         const error = {
             status,
-            message
-        }
-        next(error);  //this error will send to error-middleware.
+            message,
+            extraDetails
+        };
+
+        next(error);  // Pass the error forward or to the error-handling middleware
     }
 }
 

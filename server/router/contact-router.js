@@ -4,6 +4,7 @@ const contactForm = require("../controllers/contact-controller");
 const contactSchema = require("../validators/auth-validator");
 const validate = require("../middlewares/validate-middlewares");
 
-router.route("/contact").post(validate(contactSchema), contactForm);
+// router.route("/contact").post(validate(contactSchema), contactForm);  //validation error is coming in this code
+router.route("/contact").post(contactForm);
 
 module.exports = router;

@@ -6,6 +6,8 @@ const express = require("express");
 const app = express();
 const authRoute = require('./router/auth-router');
 const contactRoute = require('./router/contact-router');
+const serviceRoute = require('./router/service-router');
+const adminRoute = require('./router/admin-router')
 const connectDb = require('./utils/db');
 const errorMiddleware = require('./middlewares/error-middleware');
 
@@ -19,7 +21,9 @@ app.use(cors(corsOptions));  //If any req is coming from this origin and method 
 app.use(express.json());
 app.use('/api/auth', authRoute);
 app.use('/api/form', contactRoute);
+app.use('/api/data',serviceRoute);
 app.use(errorMiddleware);  //before creating connection with server and db error is checked.
+app.use('/api/admin',adminRoute);  //route for admin panel
 
 const port = 5000;
 connectDb().then(() => {

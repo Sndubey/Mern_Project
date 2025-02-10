@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
+import {toast} from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Register = () => {
     const [user, setuser] = useState({
@@ -13,7 +15,7 @@ export const Register = () => {
     const navigate = useNavigate();
     const URL = "http://localhost:5000/api/auth/register";
 
-    const {storetokenInLS} = useAuth();
+    const {storeTokenInLS} = useAuth();
 
     const handleInput = (e) => {
         const name = e.target.name;  // name var contains the name attribute of input tag, like which input tag is focused/targeted, eg: username, phone etc. (if we enter phone then name var will store phone)
@@ -23,9 +25,9 @@ export const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();  // Prevent the default behavior of a form submission, When a form is submitted, the browser will not automatically reload the page, you can then take control of the event handling and perform custom actions instead.
-        console.log(user);
+        // console.log(user);
 
-        //sending frontend data to db
+        //sending frontend data to db/backend
         try {
             const response = await fetch(URL, {
                 method: 'POST',
@@ -34,21 +36,20 @@ export const Register = () => {
                 },
                 body: JSON.stringify(user)
             });
+            const res_data = await response.json();
             if (response.ok) {  // if data successfully sended to db then empty the input field.
-                const res_data = await response.json();
-                console.log(res_data);
-                storetokenInLS(res_data.token);
+                storeTokenInLS(res_data.token);  //storing token generated into local storage.
                 setuser({
                     username: '', email: '', phone: '', password: ''
                 })
-                navigate('/login');  //if reg. successful then send user to login page.
+                toast.success("Registration successfull");
+                navigate('/');  //if reg. successful then send user to login page.
             }
             else{
-                alert("Invalid Credentials");
-                console.log("Invalid credentials");
+                toast.error(res_data.extraDetails ? res_data.extraDetails: res_data.message);  //if extraDetails not available than show message.
             }
             
-            console.log(response);
+            // console.log(response);
         } catch (error) {
             console.log("register error", error);
         }

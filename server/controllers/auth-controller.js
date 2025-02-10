@@ -1,7 +1,7 @@
 const User = require('../models/user-model');
 const bcrypt = require('bcryptjs');
 
-const home = async (req, res) => {
+const home = async (req, res) => {   //this code can be removed.
     try {
         res.status(200).json("this is home page");
     } catch (error) {
@@ -15,7 +15,7 @@ const register = async (req, res) => {
 
         const userExist = await User.findOne({ email });
         if (userExist) {
-            return res.status(400).json("user already registered");
+            return res.status(400).json({message:"user already registered"});
         }
 
         const userCreated = await User.create({ username, email, phone, password });  //storing register data into db.
@@ -41,7 +41,7 @@ const login = async (req, res) => {
         const userExist = await User.findOne({ email });
 
         if (!userExist) {
-            return res.status(400).json("user not found");
+            return res.status(400).json({message:"user not found"});
         }
 
         // const user = await bcrypt.compare(password, userExist.password);  //password is stored in hash therefore here its bcrypted.
@@ -54,7 +54,7 @@ const login = async (req, res) => {
             });
         }
         else {
-            res.status(401).json("invalid email or password");  // dont tell if email or password is incorrect.
+            res.status(401).json({message:"invalid email or password"});  // dont tell if email or password is incorrect.
         }
     } catch (error) {
         const status = 500;
@@ -67,4 +67,14 @@ const login = async (req, res) => {
     }
 }
 
-module.exports = { home, register, login };
+//User logic (used to get user data from db to frontend)
+const user = async (req,res) => {
+    try {
+        const userData = req.user;  //this req.user data is coming/updating from auth-middleware file through token.
+        return res.status(200).json({userData});
+    } catch (error) {
+        console.log(`error from user route ${error}`);
+    }
+}
+
+module.exports = { home, register, login, user };

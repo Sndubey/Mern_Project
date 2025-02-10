@@ -63,3 +63,27 @@ when frontend is running on different port and Backend is on diff. port then cor
 To handle this cors package is used.
 1: npm i cors
 2: in server.js file import cors package and add the code.
+
+Backend for service page:
+1: create collection 'services' in db, add service data into services document manually into db.
+2: create service-model.js file in models folder and add the code.
+3: create service-router.js file in router folder and add the code.
+4: create service-controller.js file in controller folder and add the code.
+5: import service-router.js file in server.js file, and add the route in app.use() method.
+6: see the frontend implementation for service page in client/notes.txt file.
+
+Creating admin panel:
+1: create admin-router.js file in router folder and write the route code.
+2: create admin-controller.js file in controller folder and write the controller code.
+3: add router code in server.js file.
+4: do the same for contacts and services
+
+Securing admin route:
+using JWT verification for Securing the admin route, means that route should only be accessible to admin, anyone who enters the route should not be able to access the user data.
+1st check whether user is logged in or not (JWT verification), checking if token is verified or not, then checking user is admin or not.
+To verify user we already created a file named auth-middleware in middlewares folder.
+1: In admin-router file call authMiddleware method which will verify user.
+2: To make any user admin we can do it by manipulating db directly (using atlas), making isAdmin true.
+3: To check if user is admin or not create a middleware file named admin-middleware in middleware folder.
+middleware doesn't return something after successfull execution, therefore we use next() method to transfer the control.
+4: Write code in adminMiddleware, In router file use adminMiddleware to check if user is admin or not.

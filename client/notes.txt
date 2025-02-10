@@ -51,7 +51,89 @@ Do the same for login page.
 
 Storing token data into local storage.
 Token works like an id whenever user interacts with server. We will use context API to send props (token).
+We can directly store token into LS using localStorage.setItem("token",res_data); but we used contextApi bcz we need 
+this code at many place so we put it in a file inside a function and everytime calls a function using contextApi.
 1: const res_data = await response.json();  // get the response data from server which also contains the token data.
 2: storetokenInLS(res_data.token);  // call this function to store token in local storage.
 3: create a folder "store", and a file inside it auth.jsx, in this file write the code. 
 4: in main.jsx file wrap the App.jsx component inside <AuthProvider> component.
+
+How to create logout:
+1: In App.jsx file add route for logout inside BrowserRouter.
+2: Create Logout.jsx file in pages folder.
+3: Write Logout code in Logout.jsx which will call provider function from auth file to remove token, using useEffect hook.
+4: Now go to Auth.jsx file and create state to handle token, to get token from LS use localStorage.getItem("token"), which will store token in usestate variable, 
+create a function in auth file LogoutUser() to delete token from LS, in AuthContext.Provider add isLoggedIn var and LogoutUser function in value to return.
+Also add setToken(servertoken); code (where servertoken holds token) inside storetokenInLS() so that after login state should be updated immidiately and isLoggedIn var is update with state var which will change the navbar immidiately without page refersh.
+5: Go to Navbar file and add Navlink for logout.
+6: In Navbar file import useAuth hook from auth file, and fetch isLoggedIn var data (which stores true if token is there else false).
+7: Use ternary operator code (?true:false) on login, register & logout navlink, if isLoggedIn var is true then show logout button in navbar else show login & register button.
+
+JWT token verification:
+previously we were just storing and deleting jwt not verifying it, now to make website secure jwt verification is important while fetcing user data to frontend like to check if token is valid or not its expired or not etc., 
+In this code JWT verification is done while sending username and email to frontend. Its a part of below implementation. 
+It will verify the identity of user without storing session info on server.
+User login/register -> jwt token generation (signs token with secret key, hashing it) -> token verification (token is taken from client and server, server contains the secret key for verification and creates token from this secret key, now both client and server generated token is compared.)
+JWT token is stateless, means to session is not created. So thers's two step verification 1st login 2nd token verification.
+  ⬇️
+Showing user name and email in contact us field:
+After user login in contact us page the username and email field will automatically be filled from database.
+To fetch user data from db, first user verification (jwt token verification) is important so from frontend user token will be sended to backend, through this token user will be verified at route stage and after verification is will return some user data, this data will be updated into request body so that it can be used by 
+user function in controller file and then user data will be fetched and sended to frontend from controller file. 
+After token is verified it will return the data that is given to it when generating token, the data inside jwt.sign here its userId, email, isAdmin.
+1: Go to auth-router file and add a route for user and authMiddleware (also import authMiddleware).
+2: create a auth-middleware file inside middleware folder import jwt and User schema (bcz whenever we are working with DB schema is important) and write code for token verification and request body updation.
+2: In auth-controller file create a function for user and write code.
+3: Go to auth.jsx file and create useState hook, a userAuthenticaion function and a useEffect hook so that fucntion gets called automatically when component is loaded, pass every useState var and function in AuthContext.provider value={}.
+5: In contact.jsx file import useAuth hook and write code.
+
+Storing contact form data into db.
+same as register.
+
+Frontend for service page:
+see the server/notes.txt file for backend implementation of service page.
+1: Goto auth.jsx file add useState variable, useEffect for calling function, function that will fetch services data using url and get method and sending it.
+2: In Service.jsx file import auth file, use .map fucntion that will print services card by fetcing data.
+3: Add css
+
+Showing error from backend to client side.
+1: Get the data from response variable (it can contain either successful registration or error msg), to use this data in both if and else block.
+2: write code: alert(res_data.errorDetails), which msg comes from zod validator in else block.
+
+Using toastify to show temporary messages on users action, like invalid credentials, invalid email etc. (toast = alert)
+1: cd client -> npm i react-toastify
+2: importing toastify in main.jsx file to use it in whole application, import and use <ToastContainer /> tag.
+3: to use toast eg in login, in login.jsx file import toast and its css from documentation, and in place of alert use toast or toast.error.
+4: To modify the css of toast go to its documentation -> demo, take its ToastContainer tag code after making changes and put this code in main.jsx file in place of ToastContainer tag.
+5: To change the css of toast, go to index.css file and write toastify css code, take code from google.
+6: We can also use toast.success("msg"), above navigate("url") method in if(response.ok) block.
+
+creating admin panel navbar:
+1: create layouts folder inside components folder, create Admin-layout.jsx file inside layouts.
+2: To set navigation for admin panel, goto App.jsx file create nested route.
+3: Goto Admin-layout file and create navbar for admin panel using NavLink (react-router-dom).
+4: To use nested loop of BrowserRouter use 'Outlet' component of react-router-dom in Admin-layout file outside of header tag.
+5: We can use icons on navbar by importing react-icons. import the component and put the component in navbar.
+
+Fetching and deleting users from db in admin panel in Admin-Users.jsx page:
+1: write code in admin-users.jsx file, create route add controller function, for both fetching and deleting users.
+
+Updating users data in Admin-Users.jsx file:
+note: to update user data, after clicking on edit button a new page opens where a form appears in which we edit the user data and click on submit button to make the changes.
+1: To do so, on clicking on edit button it should fetch user data of that id by redirecting to particular page, create route and controller function to do this.
+2: In App.jsx file give the route/navigation for update form page (here Admin-update.jsx).
+3: We use useParams method of react-router-dom, which helps in sending data (id here) from one file to another like parameter.
+
+Securing admin route
+note: when page loads first time user data is empty so user can access admin route at that time to tackle that we use loading spinner.
+if user not admin then he will not be able to access admin route.
+1: Go to auth.jsx file add usestate var for loading and pass that variable. 
+2: Go to Admin-Layout file import user and useState var from auth.jsx file add add the conditions.
+
+Managing URL:
+1: create .env file in client side and add key that contains url http://localhost:5000, as we are using this url everywhere and we need to change it while hosting our project.
+2: Go to auth file and import this key (const API = import.meta.env.VITE_APP_URI_API) and replace the url to `${API}/api/auth/user` everywhere in project, also export the var API so that other files can also access it.
+
+Note:
+Playlist: https://youtu.be/IymPq7ik29k?si=xaFkh5zpUeSS1B8B
+Database: Mongodb atlas dubeyshubham mail. database name -> mern_admin
