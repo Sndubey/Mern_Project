@@ -4,7 +4,7 @@ export const AuthContext = createContext();
 //provider function.
 export const AuthProvider = ({children}) => {
 
-    const API = import.meta.env.VITE_APP_URI_API
+    const API = import.meta.env.VITE_APP_URI_API;
 
     const [token, setToken] = useState(localStorage.getItem('token'));  //this token is get for handling login logout functionality. If token is there then user is logged in else logout.
     const [user, setUser] = useState(null);  //for handling user data for userAuthentication function.
@@ -31,7 +31,7 @@ export const AuthProvider = ({children}) => {
     const userAuthentication = async () => {
         try {
           setIsLoading(true);
-          const response = await fetch("http://localhost:5000/api/auth/user", {
+          const response = await fetch(`${API}/api/auth/user`, {
             method: "GET",
             headers: {
               Authorization: authorizationToken,
@@ -62,7 +62,7 @@ export const AuthProvider = ({children}) => {
     //service page
     const getServices = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/data/service', {
+        const response = await fetch(`${API}/api/data/service`, {
           method: 'GET',
         });
         if (response.ok) {

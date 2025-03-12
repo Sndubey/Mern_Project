@@ -5,10 +5,11 @@ export const AdminContacts = () => {
 
     const [users, setUsers] = useState([]);  //state to store all users data
     const { authorizationToken } = useAuth();  //geting token value from auth.jsx file
+    const API = import.meta.env.VITE_APP_URI_API;
 
     const getAllUsersData = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/admin/contacts", {
+            const response = await fetch(`${API}/api/admin/contacts`, {
                 method: "GET",
                 headers: {
                     Authorization: authorizationToken,
@@ -23,7 +24,7 @@ export const AdminContacts = () => {
 
     const deleteContact = async (id) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/contacts/delete/${id}`, {
+            const response = await fetch(`${API}/api/admin/contacts/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: authorizationToken,

@@ -10,8 +10,10 @@ export const Login = () => {
         password: ""
     });
 
+    const API = import.meta.env.VITE_APP_URI_API;
+
     const navigate = useNavigate();
-    const URL = "http://localhost:5000/api/auth/login";
+    const URL = `${API}/api/auth/login`;
 
     const {storeTokenInLS} = useAuth();
 
@@ -21,7 +23,6 @@ export const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(user);
 
         try {
             const response = await fetch(URL,{
@@ -43,7 +44,6 @@ export const Login = () => {
                 console.log("Invalid credentials");
             }
             
-            console.log(response);
         } catch (error) {
             console.log("login error", error);
         }

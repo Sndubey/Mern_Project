@@ -9,8 +9,9 @@ export const Contact = () => {
     }
     
     const [contact, setContact] = useState(defaultContactForm);
+    const API = import.meta.env.VITE_APP_URI_API;
 
-    const URL = "http://localhost:5000/api/form/contact";
+    const URL = `${API}/api/form/contact`;
 
     const [userData, setUserData] = useState(true);
     const {user} = useAuth();

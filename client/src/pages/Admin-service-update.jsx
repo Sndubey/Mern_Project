@@ -13,12 +13,13 @@ export const ServiceUpdate = () => {
 
     const params = useParams();
     const { authorizationToken } = useAuth();
+    const API = import.meta.env.VITE_APP_URI_API;
 
     // Get single user data
     const getSingleUserData = async () => {
         try {
             const response = await fetch(
-                `http://localhost:5000/api/admin/services/${params.id}`,
+                `${API}/api/admin/services/${params.id}`,
                 {
                     method: "GET",
                     headers: {
@@ -50,7 +51,7 @@ export const ServiceUpdate = () => {
         e.preventDefault();
         try {
             const response = await fetch(
-                `http://localhost:5000/api/admin/services/update/${params.id}`,
+                `${API}/api/admin/services/update/${params.id}`,
                 {
                     method: "PATCH",
                     headers: {

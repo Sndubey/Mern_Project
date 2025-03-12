@@ -13,7 +13,8 @@ export const Register = () => {
     });
 
     const navigate = useNavigate();
-    const URL = "http://localhost:5000/api/auth/register";
+    const API = import.meta.env.VITE_APP_URI_API;
+    const URL = `${API}/api/auth/register`;
 
     const {storeTokenInLS} = useAuth();
 
