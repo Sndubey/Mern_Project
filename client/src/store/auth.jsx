@@ -47,7 +47,8 @@ export const AuthProvider = ({children}) => {
             setIsLoading(false);
           }
         } catch (error) {
-          console.error("Error fetching user data:", error);
+          console.error("Error fetching user data:", error.message);
+          setIsLoading(false);
         }
       }
     
@@ -72,7 +73,7 @@ export const AuthProvider = ({children}) => {
           console.error("Error fetching services:", response.status, response.statusText);
         }
       } catch (error) {
-        console.log(`services frontend error ${error}`);
+        console.log(`services frontend error ${error.message}`);
       }
     }
 

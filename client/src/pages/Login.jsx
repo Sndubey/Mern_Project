@@ -41,7 +41,6 @@ export const Login = () => {
             }
             else{
                 toast.error("Invalid Credentials");
-                console.log("Invalid credentials");
             }
             
         } catch (error) {
@@ -81,6 +80,3 @@ export const Login = () => {
         </>
     );
 }
-
-// login: email: shivam@gmail.com, password: shivam123
-// admin login: email: shubham@gmail.com, password: shub1234

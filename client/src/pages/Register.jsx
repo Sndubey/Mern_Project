@@ -26,7 +26,6 @@ export const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();  // Prevent the default behavior of a form submission, When a form is submitted, the browser will not automatically reload the page, you can then take control of the event handling and perform custom actions instead.
-        // console.log(user);
 
         //sending frontend data to db/backend
         try {

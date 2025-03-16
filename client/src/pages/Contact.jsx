@@ -32,7 +32,6 @@ export const Contact = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(contact);
 
         try {
             const response = await fetch(URL, {
@@ -42,7 +41,6 @@ export const Contact = () => {
                 },
                 body: JSON.stringify(contact),
             });
-            console.log("response in contact pg: ",response);
             if(response.ok){
                 setContact(defaultContactForm);
                 console.log("user contact data stored successfully");

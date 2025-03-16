@@ -9,7 +9,6 @@ const contactForm = async (req,res) => {
         }
         res.status(200).json({message: "Contact Form Submitted Successfully" });
     } catch (error) {
-        console.log("error storing user contact data in controller file", error);
         res.status(500).json({message: error.message});
     }
 }

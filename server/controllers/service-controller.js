@@ -8,7 +8,7 @@ const service = async (req, res) => {
         }
         res.status(200).json({msg: response});
     } catch (error) {
-        console.log(`service: ${error}`)
+        res.status(500).json({message: "Internal Server Error"});
     }
 }
 

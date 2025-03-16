@@ -28,7 +28,6 @@ export const ServiceUpdate = () => {
                 }
             );
             const result = await response.json();
-            console.log("single user data: ", result);
             setData(result);
         } catch (error) {
             console.error("Error fetching user data:", error);

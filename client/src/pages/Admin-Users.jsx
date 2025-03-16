@@ -33,7 +33,6 @@ export const AdminUsers = () => {
                 }
             });
             const data = await response.json();
-            console.log("user deleted is: ",data);
 
             if(response.ok){
                 getAllUsersData();  //to get updated data after deleting user on frontend.
