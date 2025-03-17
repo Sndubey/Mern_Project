@@ -9,7 +9,7 @@ export const About = () => {
             <section className="section-hero">
                 <div className="containers grid grid-two-cols">
                     <div className="hero-content">
-                        <p>Welcome, {user ? `${user.username} to out website` : ` to out website`}</p>
+                        <p>Welcome, {user ? `${user.username} to our website` : ` to our website`}</p>
 
                         <h1>Why Choose Us?</h1>
                         <p>
