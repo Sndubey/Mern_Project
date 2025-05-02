@@ -10,6 +10,7 @@ const serviceRoute = require('./router/service-router');
 const adminRoute = require('./router/admin-router')
 const connectDb = require('./utils/db');
 const errorMiddleware = require('./middlewares/error-middleware');
+const port = process.env.PORT || 5000;
 
 const corsOptions = {
     origin: 'http://localhost:5173',
@@ -25,7 +26,6 @@ app.use('/api/data',serviceRoute);
 app.use(errorMiddleware);  //before creating connection with server and db error is checked.
 app.use('/api/admin',adminRoute);  //route for admin panel
 
-const port = 5000;
 connectDb().then(() => {
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
