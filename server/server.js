@@ -13,7 +13,7 @@ const errorMiddleware = require('./middlewares/error-middleware');
 const port = process.env.PORT || 5000;
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'https://mern-project-mcjw.vercel.app',
     methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
     credentials: true,
 }
