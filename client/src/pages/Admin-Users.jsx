@@ -12,7 +12,7 @@ export const AdminUsers = () => {
         try {
             const response = await fetch(`${API}/api/admin/users`, {
                 method: "GET",
-                credentials: 'include'
+                credentials: 'include',
                 headers: {
                     Authorization: authorizationToken,
                 }
